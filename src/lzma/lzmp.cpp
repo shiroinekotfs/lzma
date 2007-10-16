@@ -19,8 +19,8 @@
  * USA.
  */
 
-#include "sdk/Common/MyInitGuid.h"
-#include "sdk/Common/MyWindows.h"
+#include "../sdk/Common/MyInitGuid.h"
+#include "../sdk/Common/MyWindows.h"
 
 #include <iostream>
 using std::cout;
@@ -63,16 +63,16 @@ typedef vector<string> stringVector;
 #define MY_SET_BINARY_MODE(file)
 #endif
 
-#include "sdk/7zip/Common/FileStreams.h"
+#include "../sdk/7zip/Common/FileStreams.h"
 
-#include "sdk/Common/Types.h"
+#include "../sdk/Common/Types.h"
 
-#include "sdk/7zip/Compress/LZMA/LZMADecoder.h"
-#include "sdk/7zip/Compress/LZMA/LZMAEncoder.h"
+#include "../sdk/7zip/Compress/LZMA/LZMADecoder.h"
+#include "../sdk/7zip/Compress/LZMA/LZMAEncoder.h"
 
 #include "Exception.h"
 
-#include "lzma_version.h"
+#include "../lzma_version.h"
 
 namespace lzma {
 

@@ -1,4 +1,4 @@
-AM_CXXFLAGS = @SDK_CXXFLAGS@ -I../ -I../sdk -I../sdk/7zip
+AM_CPPFLAGS = @SDK_CXXFLAGS@ -I@top_srcdir@/src/sdk -I@top_srcdir@/src/sdk/7zip
 
 # Avoid dependency on libstdc++:
 #AM_LDFLAGS = -lsupc++ -static-libgcc
@@ -6,17 +6,17 @@ AM_CXXFLAGS = @SDK_CXXFLAGS@ -I../ -I../sdk -I../sdk/7zip
 bin_PROGRAMS = lzma
 
 lzma_SOURCES = lzmp.cpp Exception.h \
-		../sdk/Common/C_FileIO.cpp \
-		../sdk/Common/CRC.cpp \
-		../sdk/Common/Alloc.cpp \
-		../sdk/7zip/Common/FileStreams.cpp \
-		../sdk/7zip/Common/InBuffer.cpp \
-		../sdk/7zip/Common/OutBuffer.cpp
+		@top_srcdir@/src/sdk/Common/C_FileIO.cpp \
+		@top_srcdir@/src/sdk/Common/CRC.cpp \
+		@top_srcdir@/src/sdk/Common/Alloc.cpp \
+		@top_srcdir@/src/sdk/7zip/Common/FileStreams.cpp \
+		@top_srcdir@/src/sdk/7zip/Common/InBuffer.cpp \
+		@top_srcdir@/src/sdk/7zip/Common/OutBuffer.cpp
 
-lzma_LDADD = ../sdk/7zip/Compress/LZMA/libLZMA.a \
-		../sdk/7zip/Compress/LZ/libLZ.a \
-		../sdk/7zip/Common/libCommon.a \
-		../sdk/7zip/Compress/RangeCoder/libRangeCoder.a
+lzma_LDADD = @top_builddir@/src/sdk/7zip/Compress/LZMA/libLZMA.a \
+		@top_builddir@/src/sdk/7zip/Compress/LZ/libLZ.a \
+		@top_builddir@/src/sdk/7zip/Common/libCommon.a \
+		@top_builddir@/src/sdk/7zip/Compress/RangeCoder/libRangeCoder.a
 
 dist_man_MANS = lzma.1
 
