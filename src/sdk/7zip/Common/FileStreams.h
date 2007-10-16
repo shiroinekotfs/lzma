@@ -80,6 +80,7 @@ public:
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
   STDMETHOD(Seek)(Int64 offset, UInt32 seekOrigin, UInt64 *newPosition);
   STDMETHOD(SetSize)(Int64 newSize);
+  STDMETHOD(Close)();
 };
 
 #ifndef _WIN32_WCE
@@ -92,6 +93,7 @@ public:
 
   virtual ~CStdOutFileStream() {}
   STDMETHOD(Write)(const void *data, UInt32 size, UInt32 *processedSize);
+  STDMETHOD(Close)();
 };
 #endif
 

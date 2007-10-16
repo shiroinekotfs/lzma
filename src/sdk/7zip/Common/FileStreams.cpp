@@ -205,6 +205,13 @@ STDMETHODIMP COutFileStream::SetSize(Int64 newSize)
   #endif
 }
 
+STDMETHODIMP COutFileStream::Close()
+{
+  if (File.Close())
+    return E_FAIL;
+  return S_OK;
+}
+
 #ifndef _WIN32_WCE
 STDMETHODIMP CStdOutFileStream::Write(const void *data, UInt32 size, UInt32 *processedSize)
 {
@@ -246,6 +253,13 @@ STDMETHODIMP CStdOutFileStream::Write(const void *data, UInt32 size, UInt32 *pro
   
   return S_OK;
   #endif
+}
+
+STDMETHODIMP CStdOutFileStream::Close()
+{
+  if (close(STDOUT_FILENO))
+    return E_FAIL;
+  return S_OK;
 }
   
 #endif

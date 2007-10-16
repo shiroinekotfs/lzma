@@ -36,6 +36,8 @@ STREAM_INTERFACE(ISequentialOutStream, 0x02)
   This function is allowed to write less than "size".
   You must call Write function in loop, if you need to write exact amount of data
   */
+
+  STDMETHOD(Close)() PURE;
 };
 
 STREAM_INTERFACE_SUB(IInStream, ISequentialInStream, 0x03)

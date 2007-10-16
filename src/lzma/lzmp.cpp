@@ -839,6 +839,20 @@ int main(int argc, char **argv)
 			delete(decoderSpec);
 		}
 
+		/* Check that closing the output stream succeeds. */
+		if ((program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS)
+				&& outStream->Close()) {
+			if (stdoutput) {
+				cerr << "(stdout)";
+			}
+			else {
+				unlink(output_filename.c_str());
+				cerr << output_filename;
+			}
+			cerr << ": write error\n";
+			continue;
+		}
+
 		/* Set permissions and owners. */
 		if ( (program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS )
 				&& (!stdinput && !stdoutput) ) {
