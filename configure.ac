@@ -75,7 +75,7 @@ AC_SYS_LARGEFILE
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_LSTAT
-AC_CHECK_FUNCS([memmove strdup memset strerror strrchr strtol futimes])
+AC_CHECK_FUNCS([memmove strdup memset strerror strrchr strtol futimes futimesat])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile

@@ -45,9 +45,14 @@ typedef vector<string> stringVector;
 #include <utime.h>
 #include <sys/time.h> // futimes()
 
-// For Solaris
+// Solaris has futimesat() instead of futimes() and some systems
+// don't have anything appropriate.
 #ifndef HAVE_FUTIMES
-#define futimes(fd, tv) futimesat(fd, NULL, tv)
+# ifdef HAVE_FUTIMESAT
+#  define futimes(fd, tv) futimesat(fd, NULL, tv)
+# else
+#  define futimes(fd, tv) 0
+# endif
 #endif
 
 #if defined(_WIN32) || defined(OS2) || defined(MSDOS)
