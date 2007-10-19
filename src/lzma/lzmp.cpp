@@ -36,6 +36,8 @@ using std::string;
 using std::vector;
 typedef vector<string> stringVector;
 
+#include <errno.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <getopt.h>
 #include <signal.h>
@@ -619,6 +621,24 @@ void signal_handler (int signum)
     kill (getpid(), signum); // and then send this signal to the process again
 }
 
+static void
+open_stdxxx(int status)
+{
+	for (int i = 0; i <= 2; ++i) {
+		// We use fcntl() to check if the file descriptor is open.
+		if (fcntl(i, F_GETFD) == -1 && errno == EBADF) {
+			const int fd = open("/dev/null", O_NOCTTY
+					| (i == 0 ? O_WRONLY : O_RDONLY));
+			if (fd != i) {
+				(void)close(fd);
+				exit(status);
+			}
+		}
+	}
+	
+	return;
+}
+
 } // namespace lzma
 
 
@@ -626,6 +646,8 @@ int main(int argc, char **argv)
 {
 	using namespace lzma;
 	using std::cerr;
+
+	open_stdxxx(STATUS_ERROR);
 
 	stringVector filenames;
 
