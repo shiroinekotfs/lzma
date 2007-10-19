@@ -906,9 +906,18 @@ int main(int argc, char **argv)
 		}
 	}
 
+	cout.flush();
+	if (!cout.good() || close(STDOUT_FILENO)) {
+		cerr << "Error writing to stdout\n";
+		return STATUS_ERROR;
+	}
+	
+	cerr.flush();
+	if (!cerr.good() || close(STDERR_FILENO))
+		return STATUS_ERROR;
+
 	if (warning)
 		return STATUS_WARNING;
 
 	return STATUS_OK;
 }
-

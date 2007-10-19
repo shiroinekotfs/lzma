@@ -257,8 +257,6 @@ STDMETHODIMP CStdOutFileStream::Write(const void *data, UInt32 size, UInt32 *pro
 
 STDMETHODIMP CStdOutFileStream::Close()
 {
-  if (close(STDOUT_FILENO))
-    return E_FAIL;
   return S_OK;
 }
   
