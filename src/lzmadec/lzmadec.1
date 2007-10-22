@@ -8,10 +8,8 @@ lzmadec \- small and fast LZMA decoder
 .SH DESCRIPTION
 .B lzmadec
 is a small and fast decoder for LZMA compressed files.
-It is intended to work as a drop-in replacement for both
+It is intended to work as a drop-in replacement for
 .B lzma
-and
-.BR lzmash (1)
 in situations where available disk space is limited, only decoder is
 needed and the data can be decompressed from the standard input to the
 standard output. This has been achieved by simply ignoring all command
@@ -31,19 +29,15 @@ is specified.
 .SH EXAMPLES
 You can replace
 .B lzma
-and
-.B lzmash
-executables with
+executable with
 .B lzmadec
 for example in this kind of situations:
 .br
-.B lzma d \-si \-so < myfile.lzma > myfile
+.B lzma \-d < myfile.lzma > myfile || echo Error
 .br
-.B lzmash \-d < myfile.lzma > myfile || echo Error
+.B lzma \-d < myfile.lzma | less
 .br
-.B lzmash \-d < myfile.lzma | less
-.br
-.B tar xf myfile.tar.lzma --use=lzmash myfile1.bin myfile2.txt
+.B tar xf myfile.tar.lzma --use=lzma myfile1.bin myfile2.txt
 .br
 .B tar xYf myfile.tar.lzma
 (Requires tar patched to support LZMA.)
@@ -58,5 +52,4 @@ The actual decoding is done by the code from the LZMA SDK written by
 Igor Pavlov. http://7-zip.org/sdk.html
 .SH SEE ALSO
 .BR lzma (1),
-.BR lzmash (1),
 .BR lzmainfo (1)
