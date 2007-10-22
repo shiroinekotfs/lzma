@@ -26,12 +26,11 @@ int main(int argc, char **argv)
 	if (argc > 1 && 0 == strcmp (argv[1], "--help")) {
 		printf (/* Breaking the indentation style */
 "\nLZMAdec - a small LZMA decoder\n\n"
-"Usage: %s [--help | filename.lzma [filename2.lzma ...]]\n\n"
-"If no filename is specified lzmainfo reads stdin.\n"
-"The information is always printed to stdout.\n\n"
+"Usage: %s [--help]\n\n"
+"The compressed data is read from stdin and uncompressed to stdout.\n\n"
 "LZMA SDK version %s - %s\n"
-"LZMA utils version %s - %s\n"
-"\nLZMAinfo is free software licensed under the GNU LGPL.\n\n",
+"LZMA Utils version %s - %s\n"
+"\nLZMAdec is free software licensed under the GNU LGPL.\n\n",
 			argv[0],
 			LZMA_SDK_VERSION_STRING, LZMA_SDK_COPYRIGHT_STRING,
 			LZMA_UTILS_VERSION_STRING, LZMA_UTILS_COPYRIGHT_STRING);
