@@ -1,0 +1,17 @@
+
+LZMA Utils user visible changes
+===============================
+
+Version 4.32.1
+
+  * Explicitly check that closing the output file succeeds.
+    Fixes a rare but possible silent data loss.
+  
+  * Close stdout and stderr and check that those operations succeed.
+    Again, fixes a rare but possible silent data loss.
+  
+  * Some help message, documentation, and typo fixes to various places.
+
+  * Added replacement function for GNU getopt_long(). This should make
+    the command line tool build on a few more operating systems.
+
