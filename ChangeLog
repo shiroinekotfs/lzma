@@ -1,4 +1,11 @@
 
+2007-10-16  Lasse Collin <lasse.collin@tukaani.org>
+
+	* Moved to git. The repository is currently at
+	git://ctrl.tukaani.org/lzma-utils-legacy.git but it
+	may be moved in future. To see the detailed changelog,
+	use git-log. This ChangeLog file won't be updated anymore.
+
 2007-08-05  Lasse Collin <lasse.collin@tukaani.org>
 
 	* src/liblzmadec/lzmadec.h: Always include <sys/types.h>.
