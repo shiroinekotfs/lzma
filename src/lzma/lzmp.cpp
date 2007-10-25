@@ -39,7 +39,7 @@ typedef vector<string> stringVector;
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <getopt.h>
+#include "getopt.h"
 #include <signal.h>
 
 #include <sys/types.h>

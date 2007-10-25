@@ -38,3 +38,17 @@ uninstall-hook:
 	rm -f unlzma lzcat
 	cd $(DESTDIR)$(mandir)/man1 && \
 	rm -f unlzma.1 lzcat.1
+
+# For getopt_long() replacement:
+lzma_DEPENDENCIES = $(LIBOBJS)
+lzma_LDADD += $(LIBOBJS)
+
+EXTRA_DIST = gettext.h getopt_.h getopt.c getopt1.c getopt_int.h
+BUILT_SOURCES = $(GETOPT_H)
+MOSTLYCLEANFILES = getopt.h getopt.h-t
+
+getopt.h: getopt_.h
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  cat $(srcdir)/getopt_.h; \
+	} > $@-t
+	mv -f $@-t $@

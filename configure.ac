@@ -48,7 +48,7 @@ AC_PROG_LIBTOOL
 AC_HEADER_STDC
 # There is currently no workarounds in this package if some of
 # these headers are missing:
-AC_CHECK_HEADERS([fcntl.h getopt.h inttypes.h stddef.h stdlib.h string.h sys/time.h unistd.h utime.h], [], AC_MSG_ERROR([Required header file(s) are missing.]))
+AC_CHECK_HEADERS([fcntl.h inttypes.h stddef.h stdlib.h string.h sys/time.h unistd.h utime.h], [], AC_MSG_ERROR([Required header file(s) are missing.]))
 # Missing errno.h should be handled:
 AC_CHECK_HEADERS([errno.h])
 
@@ -73,9 +73,9 @@ AC_CHECK_TYPE(uint_fast64_t,, [AC_DEFINE(uint_fast64_t, uint64_t, [Define to `ui
 AC_SYS_LARGEFILE
 
 # Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_LSTAT
 AC_CHECK_FUNCS([memmove strdup memset strerror strrchr strtol futimes futimesat])
+
+gl_GETOPT
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
