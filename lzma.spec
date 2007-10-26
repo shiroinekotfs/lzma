@@ -1,6 +1,6 @@
 %define name lzma
 %define major 4
-%define minor 32.1
+%define minor 32.2
 %define _tmppath /tmp
 
 Name: lzma
