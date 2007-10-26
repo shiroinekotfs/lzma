@@ -207,7 +207,7 @@ STDMETHODIMP COutFileStream::SetSize(Int64 newSize)
 
 STDMETHODIMP COutFileStream::Close()
 {
-  if (File.Close())
+  if (!File.Close())
     return E_FAIL;
   return S_OK;
 }
