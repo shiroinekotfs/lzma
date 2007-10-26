@@ -2,6 +2,10 @@
 LZMA Utils user visible changes
 ===============================
 
+Version 4.32.2
+
+  * Doesn't fail with every file anymore.
+
 Version 4.32.1
 
   * Explicitly check that closing the output file succeeds.
