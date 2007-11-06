@@ -14,6 +14,10 @@ Version 4.32.3
   * Make "lzma -c foo.lzma" and "lzma -dc foo" work i.e. don't check
     that the filename suffix when writing to standard output.
 
+  * Added a copy of GNU GPLv3. It applies only to some files in the
+    "tests" directory. The rest of LZMA Utils will stay under the
+    older licenses.
+
 Version 4.32.2
 
   * Doesn't fail with every file anymore.

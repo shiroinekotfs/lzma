@@ -1,3 +1,7 @@
 SUBDIRS = src tests
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = extra
+EXTRA_DIST = \
+	extra \
+	COPYING.LGPLv2.1 \
+	COPYING.GPLv2 \
+	COPYING.GPLv3
