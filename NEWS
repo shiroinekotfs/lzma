@@ -4,9 +4,8 @@ LZMA Utils user visible changes
 
 Version 4.32.3
 
-  Seems that everything starting going wrong once I switched from
-  "beta" to "stable". I hope that there isn't much more stupid
-  new bugs left.
+  Seems that everything started going wrong once I started calling
+  this "stable" instead of "beta".
 
   * Copy ownership and permissions before closing the output file.
     Fixes <http://qa.mandriva.com/show_bug.cgi?id=35309>.
