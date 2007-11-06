@@ -885,8 +885,8 @@ int main(int argc, char **argv)
 
 			ret = futimes(outhandle, file_times);
 
-			if (!keep)
-				unlink(filenames[i].c_str());
+			// Hmm... nothing cares about ret above.
+			// Maybe someone should.
 
 			// Check that closing the output stream succeeds.
 			// Note that this is no-op for stdout; we don't
@@ -896,6 +896,11 @@ int main(int argc, char **argv)
 				cerr << output_filename << ": write error\n";
 				continue;
 			}
+
+			// Output closed successfully. Now we can remove the input
+			// file unless --keep was specified.
+			if (!keep)
+				unlink(filenames[i].c_str());
 		}
 
 		if (verbosity > 0) {
