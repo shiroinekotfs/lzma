@@ -861,20 +861,6 @@ int main(int argc, char **argv)
 			delete(decoderSpec);
 		}
 
-		/* Check that closing the output stream succeeds. */
-		if ((program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS)
-				&& outStream->Close()) {
-			if (stdoutput) {
-				cerr << "(stdout)";
-			}
-			else {
-				unlink(output_filename.c_str());
-				cerr << output_filename;
-			}
-			cerr << ": write error\n";
-			continue;
-		}
-
 		/* Set permissions and owners. */
 		if ( (program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS )
 				&& (!stdinput && !stdoutput) ) {
@@ -901,6 +887,15 @@ int main(int argc, char **argv)
 
 			if (!keep)
 				unlink(filenames[i].c_str());
+
+			// Check that closing the output stream succeeds.
+			// Note that this is no-op for stdout; we don't
+			// need to handle it separately here.
+			if (outStream->Close()) {
+				unlink(output_filename.c_str());
+				cerr << output_filename << ": write error\n";
+				continue;
+			}
 		}
 
 		if (verbosity > 0) {
