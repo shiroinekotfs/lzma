@@ -11,6 +11,9 @@ Version 4.32.3
   * Copy ownership and permissions before closing the output file.
     Fixes <http://qa.mandriva.com/show_bug.cgi?id=35309>.
 
+  * Make "lzma -c foo.lzma" and "lzma -dc foo" work i.e. don't check
+    that the filename suffix when writing to standard output.
+
 Version 4.32.2
 
   * Doesn't fail with every file anymore.
