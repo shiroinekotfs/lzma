@@ -743,7 +743,7 @@ int main(int argc, char **argv)
 			}
 
 			// Test if the file already ends with *suffix.
-			if (program_mode == PM_COMPRESS && !force
+			if (!stdoutput && program_mode == PM_COMPRESS && !force
 					&& string_ends_with(filenames[i],
 						suffix)) {
 				warning = true;
@@ -755,7 +755,7 @@ int main(int argc, char **argv)
 			}
 
 			// Test if the file extension is known.
-			if (program_mode == PM_DECOMPRESS
+			if (!stdoutput && program_mode == PM_DECOMPRESS
 					&& !extension_is_known(filenames[i])) {
 				warning = true;
 
