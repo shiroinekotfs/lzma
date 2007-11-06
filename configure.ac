@@ -92,7 +92,8 @@ AC_CONFIG_FILES([Makefile
                  src/sdk/7zip/Compress/RangeCoder/Makefile
                  src/sdk/7zip/Makefile
                  src/sdk/Common/Makefile
-                 src/sdk/Makefile])
+                 src/sdk/Makefile
+                 tests/Makefile])
 AC_OUTPUT
 
 # This package should be compiled with large file support unless there's

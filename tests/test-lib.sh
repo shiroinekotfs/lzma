@@ -63,7 +63,7 @@ this_test=$(this_test_)
 # a partition, or to undo any other global state changes.
 cleanup_() { :; }
 
-t_=$($abs_top_srcdir/mkdtemp $test_dir_ lzma-$this_test.XXXXXXXXXX) \
+t_=$($abs_top_srcdir/tests/mkdtemp $test_dir_ lzma-$this_test.XXXXXXXXXX) \
     || error_ "failed to create temporary directory in $test_dir_"
 
 # Run each test from within a temporary sub-directory named after the
