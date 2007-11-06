@@ -1,5 +1,6 @@
 SUBDIRS = src tests
 ACLOCAL_AMFLAGS = -I m4
+AUTOMAKE_OPTIONS = foreign
 EXTRA_DIST = \
 	extra \
 	COPYING.LGPLv2.1 \
