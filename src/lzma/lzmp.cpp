@@ -865,28 +865,43 @@ int main(int argc, char **argv)
 		if ( (program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS )
 				&& (!stdinput && !stdoutput) ) {
 
-			int ret = 0;
 			struct stat file_stats;
-			ret = fstat(inhandle, &file_stats);
+			if (!fstat(inhandle, &file_stats)) {
+				(void)fchown(outhandle, file_stats.st_uid, -1);
+				
+				mode_t mode;
+				if (fchown(outhandle, -1, file_stats.st_gid)) {
+					// Setting the GID of the file failed.
+					// We can still safely copy some
+					// permissions: `group' must be at
+					// least as strict as `other' and
+					// also vice versa.
+					//
+					// NOTE: After this, the owner of the
+					// source file may get additional
+					// permissions. This shouldn't be too
+					// bad, because the owner would have
+					// had permission to chmod the
+					// original file anyway.
+					mode = ((file_stats.st_mode & 0070) >> 3)
+						& (file_stats.st_mode & 0007);
+					mode = (file_stats.st_mode & 0700) | (mode << 3) | mode;
+				} else {
+					mode = file_stats.st_mode & 0777;
+				}
+				
+				(void)fchmod(outhandle, mode);
 
-			ret = fchmod(outhandle, file_stats.st_mode);
-			ret = fchown(outhandle, file_stats.st_uid, file_stats.st_gid);
-			// We need to call fchmod() again, since otherwise the SUID bits
-			// are lost.
-			ret = fchmod(outhandle, file_stats.st_mode);
+				struct timeval file_times[2];
+				// Access time
+				file_times[0].tv_sec = file_stats.st_atime;
+				file_times[0].tv_usec = 0;
+				// Modification time
+				file_times[1].tv_sec = file_stats.st_mtime;
+				file_times[1].tv_usec = 0;
 
-			struct timeval file_times[2];
-			// Access time
-			file_times[0].tv_sec = file_stats.st_atime;
-			file_times[0].tv_usec = 0;
-			// Modification time
-			file_times[1].tv_sec = file_stats.st_mtime;
-			file_times[1].tv_usec = 0;
-
-			ret = futimes(outhandle, file_times);
-
-			// Hmm... nothing cares about ret above.
-			// Maybe someone should.
+				(void)futimes(outhandle, file_times);
+			}
 
 			// Check that closing the output stream succeeds.
 			// Note that this is no-op for stdout; we don't

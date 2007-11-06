@@ -10,8 +10,14 @@ Version 4.32.3
   * Copy ownership and permissions before closing the output file.
     Fixes <http://qa.mandriva.com/show_bug.cgi?id=35309>.
 
+  * Copy permission bits with some additional sanity checks. It should
+    no longer be possible that someone gets access to the output file
+    if he/she didn't have access to the original input file. (Maybe
+    ACLs could make this more complex still, but currently lzma doesn't
+    care about ACLs.)
+
   * Make "lzma -c foo.lzma" and "lzma -dc foo" work i.e. don't check
-    that the filename suffix when writing to standard output.
+    the filename suffix when writing to standard output.
 
   * Added a copy of GNU GPLv3. It applies only to some files in the
     "tests" directory. The rest of LZMA Utils will stay under the
