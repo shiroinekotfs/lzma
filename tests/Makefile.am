@@ -10,7 +10,7 @@ TESTS = \
 	perms
 
 EXTRA_DIST = \
-	$(TESTS)
+	$(TESTS) \
 	mkdtemp \
 	test-lib.sh
 
