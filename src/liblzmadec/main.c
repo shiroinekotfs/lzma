@@ -101,6 +101,9 @@ lzmadec_init (lzmadec_stream *strm)
 extern int_fast8_t
 lzmadec_decode (lzmadec_stream *strm, const int_fast8_t finish_decoding)
 {
+	if (strm == NULL || STATE == NULL)
+		return LZMADEC_SEQUENCE_ERROR;
+
 	switch (STATE->status) {
 		case LZMADEC_STATUS_UNINITIALIZED:
 			if (strm->avail_in < LZMA_MINIMUM_COMPRESSED_FILE_SIZE)
@@ -138,6 +141,9 @@ lzmadec_decode (lzmadec_stream *strm, const int_fast8_t finish_decoding)
 extern int_fast8_t
 lzmadec_end (lzmadec_stream *strm)
 {
+	if (strm == NULL || STATE == NULL)
+		return LZMADEC_SEQUENCE_ERROR;
+
 	(strm->lzma_free)(strm->opaque, STATE->dictionary);
 	STATE->dictionary = NULL;
 	(strm->lzma_free)(strm->opaque, STATE->probs);
