@@ -35,7 +35,7 @@
 #define RC_READ_BYTE (*Buffer++)
 
 #define RC_INIT2 Code = 0; Range = 0xFFFFFFFF; \
-  { int i; for(i = 0; i < 5; i++) { RC_TEST; Code = (Code << 8) | RC_READ_BYTE; }}
+  { int ii; for(ii = 0; ii < 5; ii++) { RC_TEST; Code = (Code << 8) | RC_READ_BYTE; }}
 
 #ifdef _LZMA_IN_CB
 
@@ -67,7 +67,7 @@
 
 #define RangeDecoderBitTreeDecode(probs, numLevels, res) \
   { int i = numLevels; res = 1; \
-  do { CProb *p = probs + res; RC_GET_BIT(p, res) } while(--i != 0); \
+  do { CProb *pp = probs + res; RC_GET_BIT(pp, res) } while(--i != 0); \
   res -= (1 << numLevels); }
 
 
