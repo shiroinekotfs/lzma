@@ -29,6 +29,7 @@ using std::endl;
 
 #include <cstdio>
 #include <cstring>
+#include <climits>
 
 #include <string>
 using std::string;
@@ -146,6 +147,9 @@ enum {
 };
 
 /* getopt options. */
+enum {
+	OPT_FORMAT = INT_MIN
+};
 /* struct option { name, has_arg, flag, val } */
 const struct option long_options[] = {
 	{ "stdout", 0, 0, 'c' },
@@ -162,6 +166,7 @@ const struct option long_options[] = {
 	{ "version", 0, 0, 'V' },
 	{ "fast", 0, 0, '1' },
 	{ "best", 0, 0, '9' },
+	{ "format", 1, 0, OPT_FORMAT },
 	{ 0, 0, 0, 0 }
 };
 
@@ -337,6 +342,10 @@ void parse_options(int argc, char **argv, stringVector &filenames)
 				break;
 
 			// Advanced options //
+			// Unfortunately, these won't be compatible with
+			// the new command line tool. These options will
+			// be set differently there.
+			
 			// Compression mode
 			case 'A':
 				advanced_options.compression_mode =
@@ -353,6 +362,14 @@ void parse_options(int argc, char **argv, stringVector &filenames)
 			case 'F':
 				advanced_options.fast_bytes =
 						str2int (optarg, 0, 273);
+				break;
+
+			case OPT_FORMAT:
+				// Forward compatibility with new command line tool.
+				if (strcmp(optarg, "alone") != 0) {
+					cerr << argv[0] << ": Only --format=alone is supported\n";
+					exit(STATUS_ERROR);
+				}
 				break;
 
 			default:
