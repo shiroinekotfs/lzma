@@ -2,6 +2,19 @@
 LZMA Utils user visible changes
 ===============================
 
+Version 4.32.4
+
+  * Ignore command line switch --format=alone. This way current scripts
+    can be written so that they will produce LZMA_Alone format files
+    even with the new command line tool once it is finishes along with
+    liblzma.
+
+  * Added some internal consistency checks to liblzmadec, so that it
+    doesn't crash if given lzmadec_stream whose initialization failed.
+    Some applications using zlib and libbzip2 don't check if
+    initialization was successful, and expect that error gets caught
+    safely later.
+
 Version 4.32.3
 
   Seems that everything started going wrong once I started calling
