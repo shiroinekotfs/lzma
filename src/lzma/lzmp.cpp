@@ -464,8 +464,12 @@ void decode(NCompress::NLZMA::CDecoder *decoderSpec,
 		throw Exception("Read error");
 	if (processedSize != kPropertiesSize)
 		throw Exception("Read error");
-	if (properties[0] == 0xFF)
+	
+	// This tests only the first five bytes although the new format has
+	// six-byte magic. It was lazier to implement this way.
+	if (memcmp(properties, "\xFFLZMA", kPropertiesSize) == 0)
 		throw Exception("New .lzma format detected. Newer LZMA Utils needed to decode.");
+
 	if (decoderSpec->SetDecoderProperties2(properties, kPropertiesSize) != S_OK)
 		throw Exception("SetDecoderProperties() error");
 
