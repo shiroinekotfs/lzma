@@ -9,6 +9,10 @@ Version 4.32.4
     even with the new command line tool once it is finishes along with
     liblzma.
 
+  * The command line tool now tells if the user tries to decode files
+    in the new .lzma format. The message recommends upgrading to newer
+    LZMA Utils.
+
   * Added some internal consistency checks to liblzmadec, so that it
     doesn't crash if given lzmadec_stream whose initialization failed.
     Some applications using zlib and libbzip2 don't check if
