@@ -464,6 +464,8 @@ void decode(NCompress::NLZMA::CDecoder *decoderSpec,
 		throw Exception("Read error");
 	if (processedSize != kPropertiesSize)
 		throw Exception("Read error");
+	if (properties[0] == 0xFF)
+		throw Exception("New .lzma format detected. Newer LZMA Utils needed to decode.");
 	if (decoderSpec->SetDecoderProperties2(properties, kPropertiesSize) != S_OK)
 		throw Exception("SetDecoderProperties() error");
 
