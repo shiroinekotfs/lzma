@@ -1,8 +1,8 @@
 #!/bin/sh
 
 set -e
-aclocal -I m4
 libtoolize -c -f || glibtoolize -c -f
+aclocal -I m4
 autoconf
 autoheader
 automake -acf --foreign
