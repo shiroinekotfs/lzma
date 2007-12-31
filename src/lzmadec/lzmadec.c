@@ -9,6 +9,10 @@
 #include <lzmadec.h>
 #include "../lzma_version.h"
 
+#ifdef WIN32
+#include <fcntl.h>
+#endif
+
 #define CHUNKSIZE_IN 4096
 #define CHUNKSIZE_OUT (1024*512)
 
@@ -36,6 +40,11 @@ int main(int argc, char **argv)
 			LZMA_UTILS_VERSION_STRING, LZMA_UTILS_COPYRIGHT_STRING);
 		return 0;
 	}
+
+#ifdef WIN32
+	setmode(fileno(stdout), O_BINARY);
+	setmode(fileno(stdin), O_BINARY);
+#endif
 
 	if (buffer_in == NULL || buffer_out == NULL) {
 		fprintf (stderr, "%s: Not enough memory.\n", argv[0]);
