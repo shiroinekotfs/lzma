@@ -595,7 +595,7 @@ string pretty_print_status(string filename, string output_filename,
 	ret += ":\t ";
 
 	if (program_mode == PM_TEST) {
-		ret += "decoded succesfully";
+		ret += "decoded successfully";
 
 		return ret;
 	}
@@ -607,7 +607,7 @@ string pretty_print_status(string filename, string output_filename,
 
 	if (program_mode == PM_COMPRESS) {
 		if (keep) {
-			ret += "encoded succesfully";
+			ret += "encoded successfully";
 
 			return ret;
 		}
@@ -620,7 +620,7 @@ string pretty_print_status(string filename, string output_filename,
 
 	if (program_mode == PM_DECOMPRESS) {
 		if (keep) {
-			ret += "decoded succesfully";
+			ret += "decoded successfully";
 
 			return ret;
 		}
@@ -944,7 +944,9 @@ int main(int argc, char **argv)
 		if (verbosity > 0) {
 			if (stdoutput) {
 				cerr << filenames[i] << ":\t ";
-				cerr << "decoded succesfully"
+				cerr << (program_mode == PM_DECOMPRESS
+					 ? "decoded successfully"
+					 : "encoded successfully")
 					<< endl;
 			}
 
