@@ -517,15 +517,6 @@ int open_outstream(const string outfile,
 	return outStreamSpec->File.GetHandle();
 }
 
-double get_ratio(int inhandle, int outhandle)
-{
-	struct stat in_stats, out_stats;
-	fstat(inhandle, &in_stats);
-	fstat(outhandle, &out_stats);
-
-	return (double)out_stats.st_size / (double)in_stats.st_size;
-}
-
 mode_t get_file_mode(string filename)
 {
 	struct stat in_stat;
@@ -884,16 +875,19 @@ int main(int argc, char **argv)
 			delete(decoderSpec);
 		}
 
+		struct stat in_stats, out_stats;
+		const bool in_stats_ok = !fstat(inhandle, &in_stats);
+		const bool out_stats_ok = verbosity > 0 ? !fstat(outhandle, &out_stats) : false;
+
 		/* Set permissions and owners. */
 		if ( (program_mode == PM_COMPRESS || program_mode == PM_DECOMPRESS )
 				&& (!stdinput && !stdoutput) ) {
 
-			struct stat file_stats;
-			if (!fstat(inhandle, &file_stats)) {
-				(void)fchown(outhandle, file_stats.st_uid, -1);
+			if (in_stats_ok) {
+				(void)fchown(outhandle, in_stats.st_uid, -1);
 				
 				mode_t mode;
-				if (fchown(outhandle, -1, file_stats.st_gid)) {
+				if (fchown(outhandle, -1, in_stats.st_gid)) {
 					// Setting the GID of the file failed.
 					// We can still safely copy some
 					// permissions: `group' must be at
@@ -906,21 +900,21 @@ int main(int argc, char **argv)
 					// bad, because the owner would have
 					// had permission to chmod the
 					// original file anyway.
-					mode = ((file_stats.st_mode & 0070) >> 3)
-						& (file_stats.st_mode & 0007);
-					mode = (file_stats.st_mode & 0700) | (mode << 3) | mode;
+					mode = ((in_stats.st_mode & 0070) >> 3)
+						& (in_stats.st_mode & 0007);
+					mode = (in_stats.st_mode & 0700) | (mode << 3) | mode;
 				} else {
-					mode = file_stats.st_mode & 0777;
+					mode = in_stats.st_mode & 0777;
 				}
 				
 				(void)fchmod(outhandle, mode);
 
 				struct timeval file_times[2];
 				// Access time
-				file_times[0].tv_sec = file_stats.st_atime;
+				file_times[0].tv_sec = in_stats.st_atime;
 				file_times[0].tv_usec = 0;
 				// Modification time
-				file_times[1].tv_sec = file_stats.st_mtime;
+				file_times[1].tv_sec = in_stats.st_mtime;
 				file_times[1].tv_usec = 0;
 
 				(void)futimes(outhandle, file_times);
@@ -950,15 +944,17 @@ int main(int argc, char **argv)
 					<< endl;
 			}
 
-			else {
+			else if (in_stats_ok && out_stats_ok) {
 				char buf[10] = { 0 };
 
 				if (program_mode == PM_DECOMPRESS)
-					snprintf(buf, 10, "%.2f%%",
-							(1 - get_ratio(outhandle, inhandle)) * 100);
+					snprintf(buf, 10, "%.1f%%",
+						(1.0 - (double)in_stats.st_size
+						/ (double)out_stats.st_size) * 100.0);
 				if (program_mode == PM_COMPRESS)
-					snprintf(buf, 10, "%.2f%%",
-							(1 - get_ratio(inhandle, outhandle)) * 100);
+					snprintf(buf, 10, "%.1f%%",
+						(1.0 - (double)out_stats.st_size
+						/ (double)in_stats.st_size) * 100.0);
 
 				string ratio = buf;
 				cerr << pretty_print_status(filenames[i], output_filename,
