@@ -30,6 +30,7 @@ using std::endl;
 #include <cstdio>
 #include <cstring>
 #include <climits>
+#include <cstdlib>
 
 #include <string>
 using std::string;
