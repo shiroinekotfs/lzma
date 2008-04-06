@@ -35,15 +35,15 @@
 extern int errno
 #endif
 
-#ifndef SIZE_MAX
-#define SIZE_MAX (~(size_t)0)
-#endif
-
 #define LZMADEC_NO_STDIO
 #include "lzmadec.h"
 #undef LZMADEC_NO_STDIO
 
 #include "private.h"
+
+#ifndef SIZE_MAX
+#define SIZE_MAX (~(size_t)0)
+#endif
 
 #define LZMADEC_BUFSIZE (LZMA_IN_BUFFER_SIZE - LZMA_REQUIRED_IN_BUFFER_SIZE)
 
