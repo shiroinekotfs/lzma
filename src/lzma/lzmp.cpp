@@ -49,16 +49,6 @@ typedef vector<string> stringVector;
 #include <utime.h>
 #include <sys/time.h> // futimes()
 
-// Solaris has futimesat() instead of futimes() and some systems
-// don't have anything appropriate.
-#ifndef HAVE_FUTIMES
-# ifdef HAVE_FUTIMESAT
-#  define futimes(fd, tv) futimesat(fd, NULL, tv)
-# else
-#  define futimes(fd, tv) 0
-# endif
-#endif
-
 #if defined(_WIN32) || defined(OS2) || defined(MSDOS)
 #include <fcntl.h>
 #include <io.h>
@@ -654,6 +644,32 @@ open_stdxxx(int status)
 	return;
 }
 
+static void
+my_utimes(const char *name, int fd, time_t atime, time_t mtime)
+{
+#if defined(HAVE_FUTIMES) || defined(HAVE_FUTIMESAT) || defined(HAVE_UTIMES)
+	// This could use subsecond precision, but it's not portably available
+	// in struct stat, so that feature has to wait for LZMA Utils 5.
+	struct timeval file_times[2];
+	file_times[0].tv_sec = atime;
+	file_times[0].tv_usec = 0;
+	file_times[1].tv_sec = mtime;
+	file_times[1].tv_usec = 0;
+
+# if defined(HAVE_FUTIMES)
+	(void)futimes(fd, file_times);
+# elif defined(HAVE_FUTIMESAT)
+	(void)futimesat(fd, NULL, file_times);
+# else
+	(void)utimes(name, file_times);
+# endif
+
+#elif defined(HAVE_UTIME)
+	struct utimbuf file_times = { atime, mtime };
+	(void)utime(name, &file_times);
+#endif
+}
+
 } // namespace lzma
 
 
@@ -910,15 +926,8 @@ int main(int argc, char **argv)
 				
 				(void)fchmod(outhandle, mode);
 
-				struct timeval file_times[2];
-				// Access time
-				file_times[0].tv_sec = in_stats.st_atime;
-				file_times[0].tv_usec = 0;
-				// Modification time
-				file_times[1].tv_sec = in_stats.st_mtime;
-				file_times[1].tv_usec = 0;
-
-				(void)futimes(outhandle, file_times);
+				my_utimes(output_filename.c_str(), outhandle,
+					in_stats.st_atime, in_stats.st_mtime);
 			}
 
 			// Check that closing the output stream succeeds.

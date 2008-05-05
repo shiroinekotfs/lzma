@@ -73,7 +73,7 @@ AC_CHECK_TYPE(uint_fast64_t,, [AC_DEFINE(uint_fast64_t, uint64_t, [Define to `ui
 AC_SYS_LARGEFILE
 
 # Checks for library functions.
-AC_CHECK_FUNCS([memmove strdup memset strerror strrchr strtol futimes futimesat])
+AC_CHECK_FUNCS([memmove strdup memset strerror strrchr strtol utime utimes futimes futimesat])
 
 gl_GETOPT
 
