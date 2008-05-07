@@ -48,7 +48,7 @@ AC_PROG_LIBTOOL
 AC_HEADER_STDC
 # There is currently no workarounds in this package if some of
 # these headers are missing:
-AC_CHECK_HEADERS([fcntl.h inttypes.h stddef.h stdlib.h string.h sys/time.h unistd.h utime.h], [], AC_MSG_ERROR([Required header file(s) are missing.]))
+AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdlib.h string.h sys/time.h unistd.h utime.h], [], AC_MSG_ERROR([Required header file(s) are missing.]))
 # Missing errno.h should be handled:
 AC_CHECK_HEADERS([errno.h])
 

@@ -35,6 +35,11 @@
 extern int errno
 #endif
 
+/* Needed for pre-C99 systems that have SIZE_MAX in limits.h. */
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+
 #define LZMADEC_NO_STDIO
 #include "lzmadec.h"
 #undef LZMADEC_NO_STDIO
