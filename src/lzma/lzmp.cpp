@@ -88,7 +88,7 @@ struct lzma_option {
 	short compression_mode;			// -a
 	short dictionary;			// -d
 	short fast_bytes;			// -fb
-	wchar_t *match_finder;			// -mf
+	const wchar_t *match_finder;		// -mf
 	short literal_context_bits;		// -lc
 	short literal_pos_bits;			// -lp
 	short pos_bits;				// -pb
@@ -111,8 +111,8 @@ const lzma_option option_mapping[] = {
 };
 
 struct extension_pair {
-	char *from;
-	char *to;
+	const char *from;
+	const char *to;
 };
 
 const extension_pair known_extensions[] = {
