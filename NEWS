@@ -15,7 +15,7 @@ Version 4.32.6
   * Add support for copying timestamps on operating systems that support
     setting timestamps only by filename, not by file descriptor.
 
-  * A few small portability fixes were made.
+  * Several portability fixes were made.
 
 Version 4.32.5
 
