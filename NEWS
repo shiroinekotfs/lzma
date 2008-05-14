@@ -4,6 +4,11 @@ LZMA Utils user visible changes
 
 Version 4.32.6
 
+  * Always use 32-bit integer to hold probability variables. Earlier,
+    these were 64-bit on 64-bit architectures, which hurt cache
+    efficiency in the CPU, and thus performance of LZMA. 32-bit
+    architectures are not affected by this change.
+
   * Fix a theoretical data corruption bug in the LZMA encoder. It is
     about overflowing a 32-bit integer, whose typical value stays below
     five. I don't know if it is actually possible to construct to a file
