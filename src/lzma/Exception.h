@@ -24,7 +24,6 @@ class Exception
 private:
 	string message;
 public:
-	Exception(const char *what): message(what) { }
 	Exception(string what): message(what) { }
 
 	~Exception() { }
@@ -35,7 +34,6 @@ public:
 class ArgumentException: public Exception
 {
 public:
-	ArgumentException(const char *what): Exception(what) { }
 	ArgumentException(string what): Exception(what) { }
 
 	~ArgumentException() { }
