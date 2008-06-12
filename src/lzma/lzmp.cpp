@@ -68,6 +68,12 @@ typedef vector<string> stringVector;
 
 #include "../lzma_version.h"
 
+// Quick 'n' dirty hack for systems lacking snprintf(). The buffers should
+// be big enough so there shouldn't be buffer overflows with sprintf().
+#ifndef HAVE_SNPRINTF
+#define snprintf(buf, size, fmt, arg) sprintf(buf, fmt, arg)
+#endif
+
 namespace lzma {
 
 const char *PROGRAM_VERSION = PACKAGE_VERSION;
@@ -436,8 +442,8 @@ void encode(NCompress::NLZMA::CEncoder *encoderSpec,
 	if (result == E_OUTOFMEMORY)
 		throw Exception("Cannot allocate memory");
 	else if (result != S_OK) {
-		char buffer[33];
-		snprintf(buffer, 33, "%d", (unsigned int)result);
+		char buffer[64];
+		snprintf(buffer, sizeof(buffer), "%d", (unsigned int)result);
 		throw Exception(string("Encoder error: ") + buffer);
 	}
 }
@@ -955,14 +961,14 @@ int main(int argc, char **argv)
 			}
 
 			else if (in_stats_ok && out_stats_ok) {
-				char buf[10] = { 0 };
+				char buf[64] = { 0 };
 
 				if (program_mode == PM_DECOMPRESS)
-					snprintf(buf, 10, "%.1f%%",
+					snprintf(buf, sizeof(buf), "%.1f%%",
 						(1.0 - (double)in_stats.st_size
 						/ (double)out_stats.st_size) * 100.0);
 				if (program_mode == PM_COMPRESS)
-					snprintf(buf, 10, "%.1f%%",
+					snprintf(buf, sizeof(buf), "%.1f%%",
 						(1.0 - (double)out_stats.st_size
 						/ (double)in_stats.st_size) * 100.0);
 
