@@ -182,7 +182,7 @@ UInt32 CLiteralEncoder2::GetPrice(bool matchMode, Byte matchByte, Byte symbol) c
     context = (context << 1) | bit;
   }
   return price;
-};
+}
 
 
 namespace NLength {
