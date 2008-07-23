@@ -872,7 +872,8 @@ int main(int argc, char **argv)
 			}
 			catch (Exception e) {
 				cerr << argv[0] << ": " << e.what() << endl;
-				unlink(output_filename.c_str());
+				if (!stdoutput)
+					unlink(output_filename.c_str());
 				delete(encoderSpec);
 
 				return STATUS_ERROR;
@@ -889,7 +890,8 @@ int main(int argc, char **argv)
 			}
 			catch (Exception e) {
 				cerr << argv[0] << ": " << e.what() << endl;
-				unlink(output_filename.c_str());
+				if (!stdoutput && program_mode == PM_DECOMPRESS)
+					unlink(output_filename.c_str());
 				delete(decoderSpec);
 
 				return STATUS_ERROR;
