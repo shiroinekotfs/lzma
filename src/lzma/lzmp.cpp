@@ -622,14 +622,17 @@ string pretty_print_status(string filename, string output_filename,
 	return ret;
 }
 
-static string archive_name; // I know, it is crude, but I haven't found any other
-    // way then making a global variable to transfer filename to handler
+// When this is non-zero, we will unlink the output file if we get a signal.
+static volatile sig_atomic_t unlink_on_signal = 0;
+static string output_filename;
 
 void signal_handler (int signum)
 {
-    unlink (archive_name.c_str()); // deleting
-    signal (signum, SIG_DFL); // we return the default function to used signal
-    kill (getpid(), signum); // and then send this signal to the process again
+	if (unlink_on_signal)
+		unlink (output_filename.c_str());
+	
+	signal (signum, SIG_DFL); // we return the default function to used signal
+	kill (getpid(), signum); // and then send this signal to the process again
 }
 
 static void
@@ -731,7 +734,6 @@ int main(int argc, char **argv)
 		CMyComPtr<ISequentialOutStream> outStream;
 		UInt64 fileSize = 0;
 		int inhandle = 0, outhandle = 0;
-		string output_filename;
 
 		if (stdinput) {
 			inStream = new CStdInFileStream;
@@ -827,8 +829,7 @@ int main(int argc, char **argv)
 				else
 					output_filename = filenames[i]
 							+ suffix;
-				archive_name = output_filename;
-				
+
 				try {
 					outhandle = open_outstream(output_filename, outStream);
 				}
@@ -836,6 +837,14 @@ int main(int argc, char **argv)
 					cerr << argv[0] << ": " << e.what() << endl;
 					return STATUS_ERROR;
 				}
+
+				// There is a race condition between this and
+				// open_outstream, but this is better than
+				// nothing. The proper fix would require
+				// modifying the SDK; this was quicker to
+				// implement.
+				if (program_mode != PM_TEST)
+					unlink_on_signal = 1;
 			}
 
 		}
@@ -872,8 +881,10 @@ int main(int argc, char **argv)
 			}
 			catch (Exception e) {
 				cerr << argv[0] << ": " << e.what() << endl;
-				if (!stdoutput)
+				if (!stdoutput) {
 					unlink(output_filename.c_str());
+					unlink_on_signal = 0;
+				}
 				delete(encoderSpec);
 
 				return STATUS_ERROR;
@@ -890,8 +901,10 @@ int main(int argc, char **argv)
 			}
 			catch (Exception e) {
 				cerr << argv[0] << ": " << e.what() << endl;
-				if (!stdoutput && program_mode == PM_DECOMPRESS)
+				if (!stdoutput && program_mode == PM_DECOMPRESS) {
 					unlink(output_filename.c_str());
+					unlink_on_signal = 0;
+				}
 				delete(decoderSpec);
 
 				return STATUS_ERROR;
@@ -943,12 +956,14 @@ int main(int argc, char **argv)
 			// need to handle it separately here.
 			if (outStream->Close()) {
 				unlink(output_filename.c_str());
+				unlink_on_signal = 0;
 				cerr << output_filename << ": write error\n";
 				continue;
 			}
 
 			// Output closed successfully. Now we can remove the input
 			// file unless --keep was specified.
+			unlink_on_signal = 0;
 			if (!keep)
 				unlink(filenames[i].c_str());
 		}
