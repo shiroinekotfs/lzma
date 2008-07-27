@@ -2,6 +2,20 @@
 LZMA Utils user visible changes
 ===============================
 
+Version 4.32.7
+
+  * If "lzma -t" is run on a corrupt file or interrupted by a signal,
+    don't unlink /dev/null.
+
+  * Partial fix to race conditions where a signal could make lzma to
+    unlink both the source and destination files. Now it cannot lose
+    data anymore, but with bad luck an incomplete file may be left
+    on the disk.
+
+    (This partial fix was much simpler to implement than a real fix.
+    LZMA Utils 5 is hopefully not too far away, and it never had
+    these bugs in the first place.)
+
 Version 4.32.6
 
   * Always use 32-bit integer to hold probability variables. Earlier,
