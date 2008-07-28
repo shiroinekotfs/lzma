@@ -9,6 +9,15 @@
 
 #include <inttypes.h>
 
+// Interix doesn't include stdint.h in inttypes.h as it should. Doing
+// it unconditionally here would break IRIX, because it including stdint.h
+// directly is allowed only in C99 mode (not C++).
+#ifdef __INTERIX
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif
+#endif
+
 typedef uint8_t Byte;
 typedef int32_t Int32;
 typedef uint32_t UInt32;
