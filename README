@@ -1,6 +1,7 @@
-
 LZMA Utils - legacy branch
 --------------------------
+
+Forked by @takineko-tfs
 
 Introduction
 
@@ -36,10 +37,4 @@ Future
     lzmadec will use liblzma instead of liblzmadec. lzmadec will support
     giving the filenames to decode on the command line, and support
     memory usage limitting.
-
-Contact
-
-    The preferred way to contact is joining #tukaani on the Freenode
-    IRC network, and talk to Larhzu. Alternatively, you can email to
-    <lasse.collin@tukaani.org>.
-
+    
